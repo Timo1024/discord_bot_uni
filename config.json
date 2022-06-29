@@ -1,0 +1,69 @@
+{
+    "prefix": {
+        "char": ".",
+        "command": [
+            "prefix"
+        ]
+    },
+    "start_bot": {
+        "channel_for_start_message": "991721876265127966",
+        "start_message": "`welcome to the internet`",
+        "do_start_message": false,
+        "status_of_bot": ".help",
+        "status_of_bot_type": "PLAYING"
+    },
+    "roles": {
+        "developer": [
+            "626012070160236546"
+        ]
+    },
+    "help": {
+        "omega": [
+            "help",
+            "omega",
+            "help-omega",
+            "help_omega",
+            "help omega"
+        ]
+    },
+    "user": {
+        "info" : ["user_info", "user"]
+    },
+    "abstimmung": "abstimmung",
+    "send": ["send"],
+    "delete": ["delete", "del"],
+    "miesmuschel": {
+        "command": "miesmuschel",
+        "answers": [
+            "vielleicht",
+            "ja",
+            "nein",
+            "hallo",
+            "woher soll ich das wissen",
+            "pizzanudel",
+            "vermutlich eher nicht",
+            "was geht mich das an",
+            "möglicherweise",
+            "ich denke schon",
+            "vermutlich schon",
+            "was weiß ich",
+            "können wir die antwort überspringen?",
+            "mach was du willst",
+            "mir doch egal",
+            "weiß ich nicht",
+            "frag meinen opa",
+            "lol",
+            "morgen weiß ich vielleicht mehr darüber",
+            "was würde deine mutter darüber denken?",
+            "als ob ich dir das beantworten werde",
+            "Hilfe!",
+            " ",
+            "wer bist du überhaupt?",
+            "was fällt dir ein mich sowas zu fragen",
+            "nächste frage bitte",
+            "weil Haie rückwärts schwimmen",
+            "ich geh mal eine rauchen",
+            "42"
+        ]
+    }
+}
