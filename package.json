@@ -4,12 +4,15 @@
   "description": "",
   "main": "bot.js",
   "scripts": {
-    "start-bot": "node bot.js"
+    "start-bot": "node bot.js",
+    "build": "npm install",
+    "build+start": "npm run build & npm run start-bot"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "canvas": "^2.9.3",
     "discord.js": "^12.5.3"
   }
 }

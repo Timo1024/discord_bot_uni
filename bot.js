@@ -12,6 +12,7 @@ const config      = require('./config.json');
 const Discord     = require('discord.js');
 const commands    = require("./commands.js");
 const embeds      = require("./embeds.js");
+const ttt         = require('./ttt/ttt.js');
 
 ////////////////////////////////////////////////////////////
 ///// Program //////////////////////////////////////////////
@@ -83,12 +84,6 @@ client.on('message', async message => {
       commands.user(message, Discord, client);
   }
 
-  // starts miesmuschel
-  if (message.content.slice(0, 1) === config.prefix.char & 
-      message.content.slice(1).toLocaleLowerCase().startsWith(config.miesmuschel.command)){
-    commands.miesmuschel(message);
-  }
-
   // help-embed omega
   if (message.content.slice(0, 1) === config.prefix.char & 
       config.help.omega.includes(message.content.slice(1))){
@@ -100,4 +95,25 @@ client.on('message', async message => {
       message.content.slice(1).startsWith(config.abstimmung)){
     commands.abstimmung(message, Discord);
   }
+
+  // tik tak toe
+  if (message.content.slice(0, 1) === config.prefix.char & 
+      config.ttt.command.includes(message.content.slice(1))){
+    ttt.play_game(message, Discord, client);
+  }
+
+  // kreiert eigenes embed
+  if(config.roles.developer.includes(message.author.id) && 
+     message.content.slice(0,config.prefix.length) === config.prefix.char &&
+     config.embed.includes(message.content.split("\n")[0].slice(config.prefix.length))){
+    commands.embed(message, Discord);
+  }
+
+  // help-embed wie man den command .embed benutzt
+  if(config.roles.developer.includes(message.author.id) &&
+     message.content.slice(0,config.prefix.length) === config.prefix.char &&
+     config.embed_help.includes(message.content.slice(config.prefix.length))){
+    embeds.embed_help(message, Discord);
+  }
+
 });

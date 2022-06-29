@@ -1,6 +1,21 @@
 
 var config = require('./config.json');
 
+// returns true if hex e.a. #123456
+function check_if_hex(hex){
+  if(hex.slice(0,1) !== "#" || hex.length !== 7){
+    return false;
+  } else{
+    const short = hex.slice(1);
+    for(var i = 0; i < 6; i++){
+      if(!["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "a", "B", "b", "C", "c", "D", "d", "E", "e", "F", "f"].includes(short.slice(i,i+1))){
+        return false;
+      }
+    }
+    return true;
+  }
+}
+
 module.exports = {
 
   // gibt Infos über einen User aus
@@ -103,7 +118,7 @@ module.exports = {
         .setDescription(arg)
         .setFooter('Asked by ' + message.author.username)
       
-      message.channel.send({ embeds: [embed] }).then(sentEmbed => {
+      message.channel.send(embed).then(sentEmbed => {
         if (message.content.slice(12,14) === 'ja'){
           sentEmbed.react("👍")
         }
@@ -116,25 +131,6 @@ module.exports = {
       })
     } else {
       message.reply("`.abstimmung <ja/ne> <ja/ne> <ja/ne> <deine Frage>`");
-    }
-  },
-
-  // magische Miesmuschel
-  "miesmuschel": (message) => {
-    // random gibt Wert x mit 0 <= x <= 1 zurück
-    var msg_length = message.content.length
-    if(message.content.slice(12,13) === " " && 
-       message.content.slice(13,14) !== null &&
-       message.content.slice(msg_length-1, msg_length) === "?"){
-      var random = Math.random();
-      for(var i = 0; i < config.miesmuschel.answers.length; i++){
-        if(random < (1/config.miesmuschel.answers.length) * (i+1)){
-          message.channel.send(config.miesmuschel.answers[i]);
-          break;
-        }
-      }
-    } else {
-      message.reply("`.miesmuschel <deine Frage>?`");
     }
   },
 
@@ -157,6 +153,60 @@ module.exports = {
         } else {
           message.channel.bulkDelete(anz_nachrichten).catch(error => console.log(error.stack));
         }
+      }
+    }
+  },
+
+  // you can create embed
+  "embed": (message, Discord) => {
+    const arguments = message.content.split("\n");
+    //console.log(arguments.length);
+    if(arguments.length < 6){
+      message.channel.send("`Es fehlen Argumente. Für Hilfe wie der Command benutzt wird schreibe .help embed`");
+    } else if(arguments.length % 2 === 1){
+      message.channel.send("`Stelle sicher, dass du color, title und footer angegeben hast. Bei den fields musst du immer jeweils ein name und ein value angeben. Wenn du eines der beiden leer lassen möchtest, lasse dort einfach eine Leerzeile`")
+    } else {
+      if(!check_if_hex(arguments[1]) && arguments[1] !== ""){
+        message.channel.send("`Das erste Argument ist die Farbe des Embeds. Diese muss als hex Darstellung angegeben werden. Also z.B. #ff12a6. Wenn du die default Farbe verwenden möchtest, lässt du als zweites Argument einfach eine Leerzeile.`");
+      } else {
+        var color  = arguments[1];
+        if(color === ""){
+          color = '#496ae0';
+        }
+
+        var title  = arguments[2];
+        if(title === ""){
+          title = "‎";
+        }
+
+        var footer = arguments[3];
+        if(footer === ""){
+          footer = "‎";
+        }
+
+        var fields_temp = arguments.splice(4);
+        for(var i = 0; i< fields_temp.length; i++){
+          if(fields_temp[i] === ""){
+            fields_temp[i] = "‎";
+          }
+        }
+        var fields = [];
+        for(var i = 0; i < fields_temp.length/2; i++){
+          fields[i] = [fields_temp[i*2], fields_temp[i*2+1]];
+        }
+
+        // kreiere das Embed
+        const created_embed = new Discord.MessageEmbed()
+         .setColor(color)
+         .setTitle(title)
+         .setFooter(footer)
+
+        for(var i = 0; i<fields.length; i++){
+          created_embed.addField(fields[i][0], fields[i][1]);
+        }
+
+        message.delete();
+        message.channel.send(created_embed);
       }
     }
   }
